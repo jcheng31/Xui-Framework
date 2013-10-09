@@ -1,7 +1,7 @@
 // Similar to Backbone Events, this is intended
 // to be added to any object via _.extend().
-
-var Events = {
+var Xui = Xui || {};
+Xui.Events = {
 	// A context can be optionally specified.
 	on: function (name, callback, context) {
 		if (!callback) {
