@@ -74,7 +74,7 @@ var Events = {
 		// Check if anything's listening for "all" events.
 		var allCallbacks = this._eventsMap['all'];
 		if (allCallbacks && allCallbacks.length) {
-			_.each(allCallbacks, function(callbackObject) {
+			_.each(allCallbacks, function (callbackObject) {
 				var context = callbackObject.context;
 				// Note that we pass all arguments here, so the callback
 				// knows what the actual event that was triggered was.
@@ -83,5 +83,44 @@ var Events = {
 		}
 
 		return this;
+	},
+
+	listenTo: function (target, name, callback) {
+		if (target.on) {
+			if (!this._listeningTo) {
+				this._listeningTo = [];
+			}
+			this._listeningTo.push({
+				target: target,
+				name: name,
+				callback: callback
+			});
+
+			target.on(name, callback);
+		} else {
+			console.log("listenTo: object doesn't support events!");
+		}
+		return this;
+	},
+
+	stopListening: function (target, name) {
+		if (!this._listeningTo) {
+			// We're not listening to anything, so
+			// we're done.
+			return this;
+		}
+
+		var targetEvents = _.filter(this._listeningTo, function (callbackMap) {
+			return callbackMap.target == target && callbackMap.name === name;
+		});
+		if (targetEvents.length) {
+			_.each(targetEvents, function (callbackMap) {
+				var callback = callbackMap.callback;
+				target.off(name, callback);
+			});
+		}
+
+		return this;
 	}
+
 };
