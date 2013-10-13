@@ -3,14 +3,14 @@
 
 
 
-// create Xui if it doesn't exist
+// create Xui if it doesn"t exist
 var Xui = Xui || {};
 
 // constructor is passed the id/class of el and template
 // items
 Xui.View = function(el, template, model) {
     this.el = $(el);
-    this.template = $(template).html() || '';
+    this.template = $(template).html() || "";
     this.subscribers = [];
     this.model = model || {};
 };
@@ -23,12 +23,12 @@ Xui.View.prototype = {
     },
 
     unsubscribe: function(subscriber) {
-        this.visitSubscribers('unsubscribe', subscriber);
+        this.visitSubscribers("unsubscribe", subscriber);
     },
 
 // notify all subscribers (by calling all the function in subscribers array)
     notify: function(msg) {
-        this.visitSubscribers('notify', msg);
+        this.visitSubscribers("notify", msg);
     },
 
     visitSubscribers: function(action, arg) {
@@ -38,10 +38,10 @@ Xui.View.prototype = {
         for (i = 0; i
             < max; i += 1) {
             switch(action) {
-                case 'notify':
+                case "notify":
                     subscribers[i](arg);
                     break;
-                case 'unsubscribe':
+                case "unsubscribe":
                     if (subscribers[i] === arg) {
                         subscribers.splice(i, 1);
                     }
@@ -52,11 +52,13 @@ Xui.View.prototype = {
     render: function() {
         this.el.html(_.template(this.template, {items: this.model}));
     }
-
-
 };
 
 // -------- TEST ------------ //
+
+// items are model instance
+// var items = new Xui.Model(...)
+// have not tried it though
 
 var items = [
     {name:"Alexander"},
@@ -73,9 +75,11 @@ var view = new Xui.View("#content", "#template", items);
 
 var controller = {
     getNotif: function(msg) {
-        console.log('message from model: ' + msg);
+        console.log("message from model: " + msg);
     }
 };
 
 view.subscribe(controller.getNotif);
-view.notify('Hi Controller!');
+view.notify("Hi Controller!");
+$("body").prepend("<pre>view.render()</pre>");
+view.render();
