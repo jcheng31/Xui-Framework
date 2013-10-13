@@ -1,7 +1,5 @@
-// TODO: prob can use Events.js for notifying model
+// TODO: prob can use Events.js:trigger for notifying model
 // TODO: do away with Controller?
-
-
 
 // create Xui if it doesn"t exist
 var Xui = Xui || {};
@@ -54,24 +52,37 @@ Xui.View.prototype = {
     }
 };
 
+
+
+
+
 // -------- TEST ------------ //
 
-// items are model instance
-// var items = new Xui.Model(...)
+// movies are model instance
+// var movies = new Xui.Model(...)
 // have not tried it though
 
-var items = [
-    {name:"Alexander"},
-    {name:"Barklay"},
-    {name:"Chester"},
-    {name:"Domingo"},
-    {name:"Edward"},
-    {name:"..."},
-    {name:"Yolando"},
-    {name:"Zachary"}
-];
+jQuery.extend({
+    getValues: function(url) {
+        var result = null;
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+                result = data;
+            }
+        });
+        return result;
+    }
+});
 
-var view = new Xui.View("#content", "#template", items);
+
+var movies = $.getValues("http://cs3213.herokuapp.com/movies.json");
+
+
+var view = new Xui.View("#content", "#template", movies);
 
 var controller = {
     getNotif: function(msg) {
