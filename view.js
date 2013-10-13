@@ -1,16 +1,23 @@
+// TODO: prob can use Events.js for notifying model
+// TODO: do away with Controller?
+
+
+
 // create Xui if it doesn't exist
 var Xui = Xui || {};
 
-// constructor
-Xui.model = function(el) {
-    this.el = el || {};
+// constructor is passed the id/class of el and template
+// items
+Xui.View = function(el, template, model) {
+    this.el = $(el);
+    this.template = $(template).html() || '';
     this.subscribers = [];
+    this.model = model || {};
 };
 
-// TODO: call notify when 'el' detects changes
-Xui.model.prototype = {
-    // subscribe to this model by passing a function to be called (represented by subscriber)
-    // when model detects any change
+Xui.View.prototype = {
+// subscribe to this model by passing a function to be called (represented by subscriber)
+// when model detects any change
     subscribe: function(subscriber) {
         this.subscribers.push(subscriber);
     },
@@ -19,16 +26,17 @@ Xui.model.prototype = {
         this.visitSubscribers('unsubscribe', subscriber);
     },
 
-    // notify all subscribers (by calling all the function in subscribers array)
+// notify all subscribers (by calling all the function in subscribers array)
     notify: function(msg) {
-      this.visitSubscribers('notify', msg);
+        this.visitSubscribers('notify', msg);
     },
 
     visitSubscribers: function(action, arg) {
         subscribers = this.subscribers;
         var max = subscribers.length;
 
-        for (i = 0; i < max; i += 1) {
+        for (i = 0; i
+            < max; i += 1) {
             switch(action) {
                 case 'notify':
                     subscribers[i](arg);
@@ -39,17 +47,35 @@ Xui.model.prototype = {
                     }
             }
         }
+    },
+
+    render: function() {
+        this.el.html(_.template(this.template, {items: this.model}));
     }
+
+
 };
 
 // -------- TEST ------------ //
-var model = new Xui.model();
 
-var testController = {
+var items = [
+    {name:"Alexander"},
+    {name:"Barklay"},
+    {name:"Chester"},
+    {name:"Domingo"},
+    {name:"Edward"},
+    {name:"..."},
+    {name:"Yolando"},
+    {name:"Zachary"}
+];
+
+var view = new Xui.View("#content", "#template", items);
+
+var controller = {
     getNotif: function(msg) {
         console.log('message from model: ' + msg);
     }
 };
 
-model.subscribe(testController.getNotif);
-model.notify('Hi Controller!');
+view.subscribe(controller.getNotif);
+view.notify('Hi Controller!');
