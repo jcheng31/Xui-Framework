@@ -13,7 +13,7 @@ Xui.View = function(el, template, model) {
     this.model = model || {};
 };
 
-Xui.View.prototype = {
+_.extend(Xui.View.prototype, Xui.Events, {
 // subscribe to this model by passing a function to be called (represented by subscriber)
 // when model detects any change
     subscribe: function(subscriber) {
@@ -50,7 +50,7 @@ Xui.View.prototype = {
     render: function() {
         this.el.html(_.template(this.template, {items: this.model}));
     }
-};
+});
 
 
 
