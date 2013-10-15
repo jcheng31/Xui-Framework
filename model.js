@@ -41,7 +41,32 @@ _.extend(Xui.Model.prototype, Xui.Events, {
 	},
 
 	sync: function() {
-		// TODO.
+		return Xui.sync.apply(this, arguments);
+	},
+
+	fetch: function(options) {
+		var fetchOptions = {};
+		if (options) {
+			fetchOptions = _.clone(options);
+		}
+
+		var model = this;
+		
+		var userSpecifiedCallback = fetchOptions.success;
+		fetchOptions.success = function(response) {
+			var parsedResponse = model.parse(response, fetchOptions);
+			var setSuccess = model.set(parsedResponse, fetchOptions);
+			if (!setSuccess) {
+				return false;
+			}
+
+			if (userSpecifiedCallback) {
+				userSpecifiedCallback(model, response, fetchOptions);
+			}
+			model.trigger('sync', model, response, fetchOptions);
+		};
+
+		return this.sync('read', this, fetchOptions);
 	},
 
 	get: function(attribute) {

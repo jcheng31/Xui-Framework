@@ -18,12 +18,12 @@ History.started = false;
 
 _.extend(History.prototype, Events, {
   getHash: function(window) {
-    var match = (window || this).location.href.match(/#(.*)$/)
+    var match = (window || this).location.href.match(/#(.*)$/);
     return match ? match[1] : '';
   },
 
   getFragment: function(fragment, forcePushState) {
-    if (fragment == null) {
+    if (fragment === null) {
       if (this._hashPushState || !this._wantsHashChange || forcePushState) {
         fragment = this.location.pathname;
         var root = this.root.replace(trailingSlash, "");
