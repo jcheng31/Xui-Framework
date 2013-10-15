@@ -52,21 +52,21 @@ _.extend(Xui.Model.prototype, Xui.Events, {
 
 		var model = this;
 		
-		var userSpecifiedCallback = options.success;
-		options.success = function(response) {
-			var parsedResponse = model.parse(response, options);
-			var setSuccess = model.set(parsedResponse, options);
+		var userSpecifiedCallback = fetchOptions.success;
+		fetchOptions.success = function(response) {
+			var parsedResponse = model.parse(response, fetchOptions);
+			var setSuccess = model.set(parsedResponse, fetchOptions);
 			if (!setSuccess) {
 				return false;
 			}
 
 			if (userSpecifiedCallback) {
-				userSpecifiedCallback(model, response, options);
+				userSpecifiedCallback(model, response, fetchOptions);
 			}
-			model.trigger('sync', model, response, options);
+			model.trigger('sync', model, response, fetchOptions);
 		};
 
-		return this.sync('read', this, options);
+		return this.sync('read', this, fetchOptions);
 	},
 
 	get: function(attribute) {

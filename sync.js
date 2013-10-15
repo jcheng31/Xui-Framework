@@ -1,6 +1,6 @@
 var Xui = Xui || {};
 
-Xui.Sync = function (method, model, options) {
+Xui.sync = function (method, model, options) {
 	// We only support CRUD.
 	var methods = {
 		'create': 'POST',
