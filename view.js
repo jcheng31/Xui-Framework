@@ -94,3 +94,4 @@ view.subscribe(controller.getNotif);
 view.notify("Hi Controller!");
 $("body").prepend("<pre>view.render()</pre>");
 view.render();
+
