@@ -41,6 +41,25 @@
 
     <script type="text/javascript" src="./extend.js"></script>
 
+    <script type="text/javascript">
+    var test = Xui.Model.extend({
+    defaults: {
+        id: 0,
+        summary: "",
+        title: "",
+        updated_at: "",
+        img_url: "",
+        user: {}
+    },
+    initialize: function() {
+
+    },
+    url: function() {
+        return 'http://cs3213.herokuapp.com/movies/' + this.get('id') + '.json';
+    }
+});
+    </script>
+
 
 </body>
 
