@@ -14,10 +14,8 @@ var setOptions = {add: true, remove: true, merge: true};
 var addOptions = {add: true, merge: false, remove: false};
 
 // Define the Collection's inheritable methods.
-_.extend(Collection.prototype, Events, {
+_.extend(Collection.prototype, Xui.Events, {
 
-    // The default model for a collection is just a **Backbone.Model**.
-    // This should be overridden in most cases.
     model: Model,
 
     // Initialize is an empty function by default. Override it with your own
@@ -30,7 +28,6 @@ _.extend(Collection.prototype, Events, {
         return this.map(function(model){ return model.toJSON(options); });
     },
 
-    // Proxy `Backbone.sync` by default.
     sync: function() {
         return Xui.sync.apply(this, arguments);
     },
