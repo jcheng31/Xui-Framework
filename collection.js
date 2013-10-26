@@ -14,10 +14,8 @@ var setOptions = {add: true, remove: true, merge: true};
 var addOptions = {add: true, merge: false, remove: false};
 
 // Define the Collection's inheritable methods.
-_.extend(Collection.prototype, Events, {
+_.extend(Collection.prototype, Xui.Events, {
 
-    // The default model for a collection is just a **Backbone.Model**.
-    // This should be overridden in most cases.
     model: Model,
 
     // Initialize is an empty function by default. Override it with your own
@@ -26,11 +24,14 @@ _.extend(Collection.prototype, Events, {
 
     // The JSON representation of a Collection is an array of the
     // models' attributes.
-    toJSON: function(options) {
-        return this.map(function(model){ return model.toJSON(options); });
+    toJSON: function(options)
+    {
+        return this.map(function(model)
+        {
+            return model.toJSON(options);
+        });
     },
 
-    // Proxy `Backbone.sync` by default.
     sync: function() {
         return Xui.sync.apply(this, arguments);
     },
@@ -42,10 +43,14 @@ _.extend(Collection.prototype, Events, {
 
     // Remove a model, or a list of models from the set.
     remove: function(models, options) {
-        models = _.isArray(models) ? models.slice() : [models];
+        if(_.isArray(models))
+            models = models.slice();
+        else
+            models = [models];
         options || (options = {});
         var i, l, index, model;
-        for (i = 0, l = models.length; i < l; i++) {
+        for (i = 0, l = models.length; i < l; i++)
+        {
             model = this.get(models[i]);
             if (!model) continue;
             delete this._byId[model.id];
@@ -53,7 +58,8 @@ _.extend(Collection.prototype, Events, {
             index = this.indexOf(model);
             this.models.splice(index, 1);
             this.length--;
-            if (!options.silent) {
+            if (!options.silent)
+            {
                 options.index = index;
                 model.trigger('remove', model, this, options);
             }
@@ -121,7 +127,6 @@ _.extend(Collection.prototype, Events, {
             }
         }
 
-        // Silently sort the collection if appropriate.
         if (sort) this.sort({silent: true});
 
         if (options.silent) return this;

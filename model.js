@@ -65,6 +65,12 @@ _.extend(Xui.Model.prototype, Xui.Events, {
 			}
 			model.trigger('sync', model, response, fetchOptions);
 		};
+		fetchOptions.error = function(a, b, c) {
+			console.log("Error");
+			console.log(a);
+			console.log(b);
+			console.log(c);
+		};
 
 		return this.sync('read', this, fetchOptions);
 	},

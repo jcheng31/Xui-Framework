@@ -61,7 +61,7 @@ _.extend(Xui.View.prototype, Xui.Events, {
 // movies are model instance
 // var movies = new Xui.Model(...)
 // have not tried it though
-
+jQuery.support.cors = true; // to make IE work
 jQuery.extend({
     getValues: function(url) {
         var result = null;
@@ -72,6 +72,12 @@ jQuery.extend({
             async: false,
             success: function(data) {
                 result = data;
+            },
+            error: function(a, b, c) {
+                console.log("error message");
+                console.log(a);
+                console.log(b);
+                console.log(c);
             }
         });
         return result;
@@ -94,3 +100,4 @@ view.subscribe(controller.getNotif);
 view.notify("Hi Controller!");
 $("body").prepend("<pre>view.render()</pre>");
 view.render();
+
