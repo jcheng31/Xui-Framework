@@ -11,6 +11,7 @@ var Router = Xui.Router = function(options) {
   var splatParam = /\*\w+/g;
   var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
+  //extend router with Events
   _.extend(Router.prototype, Xui.Events, {
 
     initialize: function(){},
