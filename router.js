@@ -6,26 +6,16 @@ var Router = Xui.Router = function(options) {
     this.initialize.apply(this, arguments);
   };
 
-  // Cached regular expressions for matching named param parts and splatted
-  // parts of route strings.
   var optionalParam = /\((.*?)\)/g;
   var namedParam = /(\(\?)?:\w+/g;
   var splatParam = /\*\w+/g;
   var escapeRegExp = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
-  // Set up all inheritable **Xui.Router** properties and methods.
-  _.extend(Router.prototype, Events, {
+  _.extend(Router.prototype, Xui.Events, {
 
-    // Initialize is an empty function by default. Override it with your own
-    // initialization logic.
     initialize: function(){},
 
-    // Manually bind a single named route to a callback. For example:
-    //
     // this.route('search/:query/p:num', 'search', function(query, num) {
-    // ...
-    // });
-    //
     route: function(route, name, callback) {
       if (!_.isRegExp(route)) route = this._routeToRegExp(route);
       if (_.isFunction(name)) {
@@ -44,15 +34,12 @@ var Router = Xui.Router = function(options) {
       return this;
     },
 
-    // Simple proxy to `Xui.history` to save a fragment into the history.
+    // proxy to `Xui.history` to save a fragment into the history.
     navigate: function(fragment, options) {
       Xui.history.navigate(fragment, options);
       return this;
     },
 
-    // Bind all defined routes to `Xui.history`. We have to reverse the
-    // order of the routes here to support behavior where the most general
-    // routes can be defined at the bottom of the route map.
     _bindRoutes: function() {
       if (!this.routes) return;
       this.routes = _.result(this, 'routes');
@@ -62,8 +49,6 @@ var Router = Xui.Router = function(options) {
       }
     },
 
-    // Convert a route string into a regular expression, suitable for matching
-    // against the current location hash.
     _routeToRegExp: function(route) {
       route = route.replace(escapeRegExp, '\\$&')
                    .replace(optionalParam, '(?:$1)?')
@@ -74,9 +59,6 @@ var Router = Xui.Router = function(options) {
       return new RegExp('^' + route + '$');
     },
 
-    // Given a route, and a URL fragment that it matches, return the array of
-    // extracted decoded parameters. Empty or unmatched parameters will be
-    // treated as `null` to normalize cross-browser behavior.
     _extractParameters: function(route, fragment) {
       var params = route.exec(fragment).slice(1);
       return _.map(params, function(param) {
