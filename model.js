@@ -152,7 +152,33 @@ _.extend(Xui.Model.prototype, Xui.Events, {
 	},
 
 	destroy: function(options) {
-		// TODO.
+		var syncOptions = {};
+		if (options) {
+			syncOptions = _.clone(options);
+		}
+
+		var modelToDestroy = this;
+		var successCallback = options.success;
+
+		var triggerDestroyEvent = function() {
+			modelToDestroy.trigger('destroy', model, model.collection, syncOptions);
+		};
+
+		syncOptions.success = function(response) {
+			if (syncOptions.wait) {
+				triggerDestroyEvent();
+			}
+			if (successCallback) {
+				successCallback(model, response, syncOptions);
+			}
+			model.trigger('sync', model, response, syncOptions);
+		};
+
+		var request = this.sync('delete', this, syncOptions);
+		if (!syncOptions.wait) {
+			triggerDestroyEvent();
+		}
+		return request;
 	},
 
 	url: function() {
