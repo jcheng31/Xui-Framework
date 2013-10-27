@@ -14,13 +14,13 @@ var setOptions = {add: true, remove: true, merge: true};
 var addOptions = {add: true, merge: false, remove: false};
 
 // Define the Collection's inheritable methods.
-_.extend(Collection.prototype, Xui.Events, {
-
+_.extend(Collection.prototype, Xui.Events,
+{
     model: Model,
 
-    // Initialize is an empty function by default. Override it with your own
-    // initialization logic.
-    initialize: function(){},
+    // Initialize is an empty function by default.
+    initialize: function()
+    {},
 
     // The JSON representation of a Collection is an array of the
     // models' attributes.
