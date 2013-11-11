@@ -47,6 +47,31 @@ In general, the functionalities of Xui are quite similar to Backbone framework.
         }
     });
 
+### Collection View
+
+Pass in the subView as the view of each model for the collection view:
+
+    moviesView = Xui.CollectionView.extend({
+        template: JST["movies"],
+        subView: Xuimovie.Views.Movie,
+        events: {
+            "click a#new-movie-btn": "toNewMoviePage"
+        },
+
+        _navigateToPage: function(page) {
+            this.undelegateEvents();
+            mainRouter.navigate("/" + page, {
+                trigger: true
+            });
+            this.destroy();
+        },
+
+        toNewMoviePage: function(e) {
+            e.preventDefault();
+            this._navigateToPage('new_movie');
+        }
+    });
+
 ### Router
     router = Xui.Router.extend({
         routes: {
